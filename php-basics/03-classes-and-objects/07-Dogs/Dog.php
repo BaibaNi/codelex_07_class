@@ -17,6 +17,9 @@ class Dog
 
     public function fathersName(): string
     {
+        if($this->father === "null"){
+            return "Unknown";
+        }
         return $this->father;
     }
 
@@ -29,5 +32,4 @@ class Dog
     {
         return $this->mother === $otherDog->mothersName() ? true : false;
     }
-
 }
