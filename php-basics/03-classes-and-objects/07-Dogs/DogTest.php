@@ -1,24 +1,32 @@
 <?php
 class DogTest
 {
-    public function main()
+    public function testDogParents(Dog $dog): void
     {
-        $sparky = new Dog("Sparky", "male");
-        $sam = new Dog("Sam", "male");
-        $lady = new Dog("Lady", "female");
-        $molly = new Dog("Molly", "female");
-        $buster = new Dog("Buster", "male", "Lady", "Sparky");
-        $coco = new Dog("Coco", "female", "Molly", "Buster");
-        $rocky = new Dog("Rocky", "male", "Molly", "Sam");
-        $max = new Dog("Max", "male", "Lady", "Rocky");
-
-
-        echo $coco->fathersName() . PHP_EOL;
-        echo $sparky->fathersName() . PHP_EOL;
-        echo $coco->hasSameMotherAs($max) === 1 ? "The same mother." . PHP_EOL : "Different mother." . PHP_EOL;
-
+        if($dog->mothersName() === "Lady" && $dog->fathersName() === "Rocky"){
+            echo "Correct";
+        } else {
+            echo "NOT correct";
+        }
     }
 
+    public function testIfHasFather(Dog $dog): void
+    {
+        if($dog->fathersName() === "Unknown"){
+            echo $dog->getName() . " - father is UNKNOWN.";
+        } else{
+            echo $dog->getName() . " - father is " . $dog->fathersName();
+        }
+    }
+
+    public function testSameMother(Dog $dog1, Dog $dog2): void
+    {
+        if($dog1->mothersName() === $dog2->mothersName() && $dog1->mothersName() !== "Unknown" || $dog2->mothersName() !== "Unknown"){
+            echo $dog1->getName() . " and " . $dog2->getName() . " has the same mother.";
+        } else{
+            echo $dog1->getName() . " and " . $dog2->getName() . " DOES NOT have the same mother.";
+        }
+    }
 
 
 }

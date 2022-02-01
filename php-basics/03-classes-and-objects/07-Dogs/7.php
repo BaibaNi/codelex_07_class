@@ -25,4 +25,37 @@
 require_once "Dog.php";
 require_once "DogTest.php";
 
-(new DogTest())->main();
+$sparky = new Dog("Sparky", "male");
+$sam = new Dog("Sam", "male");
+$lady = new Dog("Lady", "female");
+$molly = new Dog("Molly", "female");
+$buster = new Dog("Buster", "male", "Lady", "Sparky");
+$coco = new Dog("Coco", "female", "Molly", "Buster");
+$rocky = new Dog("Rocky", "male", "Molly", "Sam");
+$max = new Dog("Max", "male", "Lady", "Rocky");
+
+(new DogTest())->testDogParents($max);
+echo PHP_EOL;
+
+(new DogTest())->testDogParents($buster);
+echo PHP_EOL;
+
+
+(new DogTest())->testIfHasFather($sparky);
+echo PHP_EOL;
+
+(new DogTest())->testIfHasFather($rocky);
+echo PHP_EOL;
+
+
+(new DogTest())->testSameMother($coco, $rocky);
+echo PHP_EOL;
+
+(new DogTest())->testSameMother($molly, $sam);
+echo PHP_EOL;
+
+
+// simple tests
+echo $coco->fathersName() . PHP_EOL;
+echo $sparky->fathersName() . PHP_EOL;
+echo $coco->hasSameMotherAs($max) === 1 ? "The same mother." . PHP_EOL : "Different mother." . PHP_EOL;

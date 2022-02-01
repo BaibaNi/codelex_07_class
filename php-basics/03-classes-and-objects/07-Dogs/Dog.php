@@ -29,4 +29,9 @@ class Dog
     {
         return $this->mother === $otherDog->mothersName() ? true : false;
     }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
 }
