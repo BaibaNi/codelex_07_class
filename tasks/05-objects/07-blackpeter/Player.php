@@ -14,249 +14,68 @@ class Player
         $this->cards[] = $card;
     }
 
-    public function disband1(): void
+    public function disband1(): void // removing pairs not taking into account the colors
     {
 
-        $symbols = [];
+        $values = [];
         foreach ($this->cards as $card)
         {
             /** @var Card $card */
-            $symbols[] = $card->getSymbol();
+            $values[] = $card->getValue();
         }
 
-        $uniqueCardsCount = array_count_values($symbols);
+        $uniqueCardsCount = array_count_values($values);
 
-//        $colors = ["R", "B"];//todo
-//        for($k = 0; $k < 2; $k++) {
-
-
-            foreach ($uniqueCardsCount as $symbol => $count) {
-                if ($count === 1) continue;
-                if ($count === 2 || $count === 4) {
+        foreach ($uniqueCardsCount as $value => $count) {
+            if ($count === 1) continue;
+            if ($count === 2 || $count === 4) {
+                foreach ($this->cards as $index => $card) {
+                    /** @var Card $card */
+                    if ($card->getValue() === (string)$value){
+                        unset($this->cards[$index]);
+                    }
+                }
+            }
+            if ($count === 3) {
+                for ($i = 0; $i < 2; $i++) {
                     foreach ($this->cards as $index => $card) {
                         /** @var Card $card */
-                        if ($card->getSymbol() === (string)$symbol){ // && $card->getColor() === "R") {
+                        if ($card->getValue() === (string)$value){
                             unset($this->cards[$index]);
-                        }
-                    }
-                }
-                if ($count === 3) {
-                    for ($i = 0; $i < 2; $i++) {
-                        foreach ($this->cards as $index => $card) {
-                            /** @var Card $card */
-                            if ($card->getSymbol() === (string)$symbol){ // && $card->getColor() === "R") {
-                                unset($this->cards[$index]);
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-
-
-//        }
-    }
-
-
-    public function disband2(): void
-    {
-
-        $symbols = [];
-        foreach ($this->cards as $card)
-        {
-            /** @var Card $card */
-            $symbols[] = $card->getSymbol();
-        }
-
-        $uniqueCardsCount = array_count_values($symbols);
-
-//        var_dump($uniqueCardsCount); die;
-
-//        $colors = ["R", "B"];//todo
-//        for($k = 0; $k < 2; $k++) {
-
-
-        foreach ($uniqueCardsCount as $symbol => $count) {
-            if ($count === 1) continue;
-            elseif ($count === 2 || $count === 4) {
-                $color = "";
-                $firstIndex = -1;
-                foreach ($this->cards as $index => $card) {
-                    /** @var Card $card */
-                    if ($card->getSymbol() === (string)$symbol){ // && $card->getColor() === "R") {
-                        if($count === 4) unset($this->cards[$index]);
-                        else if($card->getColor() === $color){
-                            unset($this->cards[$index]);
-                            unset($this->cards[$firstIndex]);
                             break;
                         }
-                        elseif($color === ""){
-                            $color = $card->getColor();
-                            $firstIndex = $index;
-                        }
                     }
                 }
-            }
-            elseif ($count === 3) {
-//                    for ($i = 0; $i < 2; $i++) {
-                $color = "";
-                $firstIndex = -1;
-                foreach ($this->cards as $index => $card) {
-                    /** @var Card $card */
-                    if ($card->getSymbol() === (string)$symbol) {
-                        if($card->getColor() === $color){
-                            unset($this->cards[$index]);
-                            unset($this->cards[$firstIndex]);
-                            break;
-                        }
-                        elseif($color === ""){
-                            $color = $card->getColor();
-                            $firstIndex = $index;
-                        }
-                    }
-                }
-//                    }
-            }
-        }
-
-
-//        }
-    }
-
-
-    public function disband3(): void
-    {
-
-        $redCardSymbols = [];
-        $blackCardSymbols = [];
-        foreach ($this->cards as $card)
-        {
-            /** @var Card $card */
-            if($card->getColor() === "R"){
-                $redCardSymbols[] = $card->getSymbol();
-            } elseif ($card->getColor() === "B"){
-                $blackCardSymbols[] = $card->getSymbol();
-            }
-        }
-
-
-
-        $uniqueRedCardsCount = array_count_values($redCardSymbols);
-        $uniqueBlackCardsCount = array_count_values($blackCardSymbols);
-
-        foreach ($uniqueRedCardsCount as $redSymbol => $count) {
-            if ($count === 1) continue;
-            if ($count === 2) {
-                foreach ($this->cards as $index => $card) {
-                    /** @var Card $card */
-                    if ($card->getSymbol() === (string)$redSymbol){
-                        unset($this->cards[$index]);
-                    }
-                }
-            }
-        }
-
-        foreach ($uniqueBlackCardsCount as $blackSymbol => $count) {
-            if ($count === 1) continue;
-            if ($count === 2) {
-                foreach ($this->cards as $index => $card) {
-                    /** @var Card $card */
-                    if ($card->getSymbol() === (string)$blackSymbol){
-                        unset($this->cards[$index]);
-                    }
-                }
-            }
-        }
-
-    }
-
-
-    public function disband4(): void
-    {
-
-        $symbols = [];
-        foreach ($this->cards as $card)
-        {
-            /** @var Card $card */
-            $symbols[] = $card->getSymbol();
-        }
-
-        $uniqueCardsCount = array_count_values($symbols);
-
-        foreach ($uniqueCardsCount as $symbol => $count) {
-            foreach ($this->cards as $index => $card) {
-                if($count === 2){
-                    if ($card->getColor() === "R" && $card->getSymbol() === (string)$symbol) {
-                        unset($this->cards[$index]);
-                    }
-                    if ($card->getColor() === "B" && $card->getSymbol() === (string)$symbol) {
-                        unset($this->cards[$index]);
-                    }
-                }
-
-
             }
         }
     }
 
-
-    public function disband(): void
+    public function disband(): void // removing pairs, taking into account the colors
     {
 
-        $redCardSymbols = [];
-        $blackCardSymbols = [];
-        foreach ($this->cards as $card)
+        usort($this->cards, function (Card $a, Card $b)
         {
-            /** @var Card $card */
-            if($card->getColor() === "R"){
-                $redCardSymbols[] = $card;
-            } elseif ($card->getColor() === "B"){
-                $blackCardSymbols[] = $card;
+            if ($a->getColor() == $b->getColor())
+            {
+                return ($a->getValue() < $b->getValue()) ? -1 : 1;
             }
-        }
-
-        usort($redCardSymbols, function (object $card1, object $card2)
-        {
-            if ($card1->getSymbol() == $card2->getSymbol()) return 0;
-            return ($card1->getSymbol() < $card2->getSymbol()) ? -1 : 1;
+            return ($a->getColor() < $b->getColor()) ? -1 : 1;
         });
 
+        $previousCardValue = '';
+        $previousCardColor = '';
+        $previousCardIndex = -1;
 
-        $previousCard = new Card("", "", "");
-        $previousIndex = -1;
-        foreach($redCardSymbols as $redIndex => $redCard){
-            if($redCard->getSymbol() === $previousCard->getSymbol()) {
-                unset($redCardSymbols[$redIndex]);
-                unset($redCardSymbols[$previousIndex]);
+        foreach($this->cards as $index => $card){
+            if($card->getValue() === $previousCardValue && $card->getColor() === $previousCardColor){
+                unset($this->cards[$previousCardIndex]);
+                unset($this->cards[$index]);
+            } else{
+                $previousCardValue = $card->getValue();
+                $previousCardColor = $card->getColor();
+                $previousCardIndex = $index;
             }
-            $previousCard = $redCard;
-            $previousIndex = $redIndex;
         }
-
-        $this->cards = $redCardSymbols;
-
-
-
-        usort($blackCardSymbols, function (object $card1, object $card2)
-        {
-            if ($card1->getSymbol() == $card2->getSymbol()) return 0;
-            return ($card1->getSymbol() < $card2->getSymbol()) ? -1 : 1;
-        });
-
-
-        $previousBCard = new Card("", "", "");
-        $previousIndex = -1;
-        foreach($blackCardSymbols as $blackIndex => $blackCard){
-            if($blackCard->getSymbol() === $previousBCard->getSymbol()) {
-                unset($blackCardSymbols[$blackIndex]);
-                unset($blackCardSymbols[$previousIndex]);
-            }
-            $previousBCard = $blackCard;
-            $previousIndex = $blackIndex;
-        }
-
-        $this->cards[] = $blackCardSymbols;
-
     }
 
     public function removeCard(): Card

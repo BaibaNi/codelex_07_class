@@ -64,7 +64,7 @@ displayCards($player2);
 $turn = 1;
 while(!empty($player1->getCards()) || !empty($player2->getCards())){
 
-    echo PHP_EOL . "----- ROUND $turn -------------------------------------" . PHP_EOL;
+    echo PHP_EOL . "----- ROUND $turn - after both players have removed the pairs --------------" . PHP_EOL;
 
     $player1->addCard($player2->removeCard());
     $player1->disband();
@@ -81,6 +81,7 @@ while(!empty($player1->getCards()) || !empty($player2->getCards())){
 
     $player2->addCard($player1->removeCard());
     $player2->disband();
+
 
     echo "Player 1: ";
     displayCards($player1);

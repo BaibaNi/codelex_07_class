@@ -3,7 +3,7 @@ class Deck
 {
     private array $cards = [];
     private array $symbols = [
-        '♦', '♣', '♥', '♠'
+        '♦', '♧', '♥', '♤'
     ];
 
 
@@ -45,6 +45,6 @@ class Deck
                 }
             }
         }
-        $this->cards[] = new Card('♠', 'J', "B");
+        $this->cards[] = new Card('♤', 'J', 'B');
     }
 }
