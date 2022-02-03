@@ -12,10 +12,10 @@ require_once "BankAccount.php";
 require_once "AccountHolder.php";
 
 $benson = new AccountHolder("Benson", 17.25);
-echo (new BankAccount())->show_user_name_and_balance($benson) . PHP_EOL;
+echo (new BankAccount())->showUserNameAndBalance($benson) . PHP_EOL;
 
 $james = new AccountHolder("James", -1.50);
-echo (new BankAccount())->show_user_name_and_balance($james) . PHP_EOL;
+echo (new BankAccount())->showUserNameAndBalance($james) . PHP_EOL;
 
 $deborah = new AccountHolder("Deborah", 17.50);
-echo (new BankAccount())->show_user_name_and_balance($deborah) . PHP_EOL;
+echo (new BankAccount())->showUserNameAndBalance($deborah) . PHP_EOL;

@@ -1,7 +1,7 @@
 <?php
 class BankAccount
 {
-    public function show_user_name_and_balance(AccountHolder $accountHolder): string
+    public function showUserNameAndBalance(AccountHolder $accountHolder): string
     {
         if($accountHolder->getBalance() < 0){
             return $accountHolder->getName() . ", -$" . number_format(abs($accountHolder->getBalance()), 2);
