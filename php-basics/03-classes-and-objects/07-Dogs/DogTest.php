@@ -13,9 +13,9 @@ class DogTest
     public function testIfHasFather(Dog $dog): void
     {
         if($dog->fathersName() === "Unknown"){
-            echo $dog->getName() . " - father is UNKNOWN.";
+            echo $dog->getName() . "'s father is UNKNOWN.";
         } else{
-            echo $dog->getName() . " - father is " . $dog->fathersName();
+            echo $dog->getName() . "'s father is " . $dog->fathersName();
         }
     }
 

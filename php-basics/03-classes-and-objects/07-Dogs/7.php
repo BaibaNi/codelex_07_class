@@ -34,20 +34,22 @@ $coco = new Dog("Coco", "female", "Molly", "Buster");
 $rocky = new Dog("Rocky", "male", "Molly", "Sam");
 $max = new Dog("Max", "male", "Lady", "Rocky");
 
+
+echo "----- Test if dog's parents are Lady and Rocky -----" . PHP_EOL;
 (new DogTest())->testDogParents($max);
 echo PHP_EOL;
 
 (new DogTest())->testDogParents($buster);
 echo PHP_EOL;
 
-
+echo "----- Test if dog has father -----" . PHP_EOL;
 (new DogTest())->testIfHasFather($sparky);
 echo PHP_EOL;
 
 (new DogTest())->testIfHasFather($rocky);
 echo PHP_EOL;
 
-
+echo "----- Test if dogs have the same mother -----" . PHP_EOL;
 (new DogTest())->testSameMother($coco, $rocky);
 echo PHP_EOL;
 
@@ -56,6 +58,6 @@ echo PHP_EOL;
 
 
 // simple tests
-echo $coco->fathersName() . PHP_EOL;
-echo $sparky->fathersName() . PHP_EOL;
-echo $coco->hasSameMotherAs($max) === 1 ? "The same mother." . PHP_EOL : "Different mother." . PHP_EOL;
+//echo $coco->fathersName() . PHP_EOL;
+//echo $sparky->fathersName() . PHP_EOL;
+//echo $coco->hasSameMotherAs($max) === 1 ? "The same mother." . PHP_EOL : "Different mother." . PHP_EOL;
