@@ -27,7 +27,7 @@ class Dog
 
     public function hasSameMotherAs(Dog $otherDog): bool
     {
-        return $this->mother === $otherDog->mothersName() ? true : false;
+        return $this->mother === $otherDog->mothersName();
     }
 
     public function getName(): string
