@@ -5,7 +5,11 @@ class VideoStore
 
     public function addVideo(string $videoTitle): void
     {
-        $this->inventory[] = new Video($videoTitle);
+        if(!array_filter($this->inventory, function($video) use ($videoTitle){
+            return $video->getTitle() === $videoTitle;
+        })){
+            $this->inventory[] = new Video($videoTitle);
+        }
     }
 
 

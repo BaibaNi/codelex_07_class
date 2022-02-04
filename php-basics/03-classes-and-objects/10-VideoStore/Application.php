@@ -73,11 +73,14 @@ class Application
         }
 
         $videoRent = $this->videoStore->getInventory()[$videoRentIndex];
-        $this->videoStore->checkOutVideo($videoRent->getTitle());
+        if(!$videoRent->getAvailability()){
+            echo ">> Movie \"{$videoRent->getTitle()}\" is not available to rent." . PHP_EOL;
+        } else{
+            $this->videoStore->checkOutVideo($videoRent->getTitle());
 
-        echo ">> You selected \"{$videoRent->getTitle()}\" - ";
-        echo "average rating ★ {$videoRent->getAverageRating()} ★ " . PHP_EOL;
-
+            echo ">> You selected \"{$videoRent->getTitle()}\" - ";
+            echo "average rating ★ {$videoRent->getAverageRating()} ★ " . PHP_EOL;
+        }
     }
 
     private function rateVideo()
@@ -86,18 +89,18 @@ class Application
 
         $videoRateIndex = readline("Select movie (number) to rate: ");
         if($videoRateIndex >= count($this->videoStore->getInventory())) {
-            exit("Movie not found." . PHP_EOL);
+            echo "Movie not found." . PHP_EOL;
         }
 
         $videoRating = (float) readline("Give your rating (0 to 5): ");
         if($videoRating < 0 || $videoRating > 5){
-            exit("Impossible rating." . PHP_EOL);
+            echo "Impossible rating score." . PHP_EOL;
+        } else{
+            $videoRateTitle = $this->videoStore->getInventory()[$videoRateIndex]->getTitle();
+            $this->videoStore->takeUsersRating($videoRateTitle, $videoRating);
+
+            echo ">> Your rating of $videoRating ★ for movie \"$videoRateTitle\" was accepted." . PHP_EOL;
         }
-
-        $videoRateTitle = $this->videoStore->getInventory()[$videoRateIndex]->getTitle();
-        $this->videoStore->takeUsersRating($videoRateTitle, $videoRating);
-
-        echo ">> Your rating of $videoRating ★ for movie \"$videoRateTitle\" was accepted." . PHP_EOL;
     }
 
     private function returnVideo()
