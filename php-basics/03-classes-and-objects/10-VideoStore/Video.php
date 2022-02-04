@@ -26,7 +26,7 @@ class Video
 
     public function receiveRating(?float $rating): void
     {
-        $this->allRatings[] = number_format($rating, 2);
+        $this->allRatings[] = number_format($rating, 1);
     }
 
     public function getAverageRating(): float
@@ -34,7 +34,22 @@ class Video
         if(count($this->allRatings) !== 0){
             $this->averageRating = array_sum($this->allRatings) / count($this->allRatings);
         }
-        return number_format($this->averageRating, 2);
+        return number_format($this->averageRating, 1);
+    }
+
+    public function peopleGive4and5Stars(): int
+    {
+        $count = 0;
+        foreach ($this->allRatings as $rating){
+            if ($rating >= 4) {
+                $count++;
+            }
+        }
+
+        if(count($this->allRatings) === 0){
+            return 0;
+        }
+        return intval($count / count($this->allRatings) * 100);
     }
 
     public function getTitle(): string

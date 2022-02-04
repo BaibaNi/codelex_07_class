@@ -8,6 +8,7 @@ class Application
         $this->videoStore = new VideoStore();
 
         while (true) {
+            echo PHP_EOL;
             echo "Choose the operation you want to perform " . PHP_EOL;
             echo "Choose 0 for EXIT"  . PHP_EOL;
             echo "Choose 1 to fill video store"  . PHP_EOL;
@@ -45,44 +46,93 @@ class Application
 
     private function addMovies(): void
     {
-        $this->videoStore->addVideo("The Matrix");
-        $this->videoStore->addVideo("Godfather II");
-        $this->videoStore->addVideo("Star Wars Episode IV: A New Hope");
+//        $videoFill = readline("Fill videos manually? [y/n] ");
+//        if($videoFill === "Y" || $videoFill === "y"){
+//            $videoTitleFill = readline("Movie title: ");
+//            $this->videoStore->addVideo($videoTitleFill);
+//        } else{
+            $this->videoStore->addVideo("The Matrix");
+            $this->videoStore->addVideo("Godfather II");
+            $this->videoStore->addVideo("Star Wars Episode IV: A New Hope");
+            $this->videoStore->addVideo("Good Will Hunting");
+            $this->videoStore->addVideo("A Nightmare on Elm Street");
+            $this->videoStore->addVideo("Pulp Fiction");
+            $this->videoStore->addVideo("Only Lovers Left Alive");
+//        }
+
+        $this->listInventory();
     }
 
     private function rentVideo()
     {
-        $this->videoStore->checkOutVideo("Godfather II");
-        $this->videoStore->checkOutVideo("The Matrix");
-        $this->videoStore->checkOutVideo("Star Wars Episode IV: A New Hope");
+        $this->listInventory();
+
+        $videoRentIndex = readline("Select movie (number) to rent: ");
+        if($videoRentIndex >= count($this->videoStore->getInventory())) {
+            exit("Movie not found." . PHP_EOL);
+        }
+
+        $videoRent = $this->videoStore->getInventory()[$videoRentIndex];
+        $this->videoStore->checkOutVideo($videoRent->getTitle());
+
+        echo ">> You selected \"{$videoRent->getTitle()}\" - ";
+        echo "average rating ★ {$videoRent->getAverageRating()} ★ " . PHP_EOL;
+
     }
 
     private function rateVideo()
     {
-        $this->videoStore->takeUsersRating("Godfather II", 5);
-        $this->videoStore->takeUsersRating("Godfather II", 3);
-        $this->videoStore->takeUsersRating("Godfather II", 3);
-        $this->videoStore->takeUsersRating("The Matrix", 5);
-        $this->videoStore->takeUsersRating("Star Wars Episode IV: A New Hope", 5);
-        $this->videoStore->takeUsersRating("Godfather II", 4);
-        $this->videoStore->takeUsersRating("The Matrix", 4.007);
-        $this->videoStore->takeUsersRating("Star Wars Episode IV: A New Hope", 4.50);
+        $this->listInventory();
+
+        $videoRateIndex = readline("Select movie (number) to rate: ");
+        if($videoRateIndex >= count($this->videoStore->getInventory())) {
+            exit("Movie not found." . PHP_EOL);
+        }
+
+        $videoRating = (float) readline("Give your rating (0 to 5): ");
+        if($videoRating < 0 || $videoRating > 5){
+            exit("Impossible rating." . PHP_EOL);
+        }
+
+        $videoRateTitle = $this->videoStore->getInventory()[$videoRateIndex]->getTitle();
+        $this->videoStore->takeUsersRating($videoRateTitle, $videoRating);
+
+        echo ">> Your rating of $videoRating ★ for movie \"$videoRateTitle\" was accepted." . PHP_EOL;
     }
 
     private function returnVideo()
     {
-        $this->videoStore->returnVideoToStore("The Matrix");
-        $this->videoStore->returnVideoToStore("Godfather II");
-        $this->videoStore->returnVideoToStore("Star Wars Episode IV: A New Hope");
+        $this->listInventory();
+
+        $videoReturnIndex = readline("Movie title (to return): ");
+
+        $videoReturnTitle = $this->videoStore->getInventory()[$videoReturnIndex]->getTitle();
+        $this->videoStore->returnVideoToStore($videoReturnTitle);
+
+        echo ">> Movie \"$videoReturnTitle\" is returned." . PHP_EOL;
+
     }
 
     private function listInventory()
     {
-        echo PHP_EOL . "----- LIST OF MOVIES ----------------------" . PHP_EOL;
-        foreach ($this->videoStore->getInventory() as $video){
+        echo PHP_EOL;
+        echo "----- LIST OF MOVIES -------------------------------------------------------------------------------";
+        echo PHP_EOL;
+        $countRented = 0;
+        $countAvailable = 0;
+        foreach ($this->videoStore->getInventory() as $index => $video){
             $status = ($video->getAvailability()) ? "available" : "rented";
-            echo $video->getTitle() . " | ★ " . $video->getAverageRating() . " ★ | " . $status . PHP_EOL;
+//            echo $index . " - " . $video->getTitle() . " | ★ " . $video->getAverageRating() . " ★ | ";
+//            echo $video->peopleGive4and5Stars() . "% of voters give 4 and 5 ★." . $status . PHP_EOL;
+            ($video->getAvailability()) ? $countAvailable++ : $countRented++;
+
+            echo sprintf('%1$s - %2$32s | ★ %3$s ★ | %4$-2s percent of voters give 4 and 5 ★. | %5$4s' . PHP_EOL,
+                $index , $video->getTitle(), $video->getAverageRating(), $video->peopleGive4and5Stars(), $status);
         }
-        echo "-------------------------------------------" . PHP_EOL . PHP_EOL;
+        echo "----------------------------------------------------------------------------------------------------";
+        echo PHP_EOL . "Available - $countAvailable movies. Rented - $countRented movies.";
+        echo PHP_EOL . PHP_EOL;
+
+
     }
 }
